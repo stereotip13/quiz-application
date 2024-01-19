@@ -1,10 +1,10 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import AdminPage from './components/Pages/AdminPage';
-import AuthorizationPage from './components/Pages/AuthorizationPage';
-import QuizPage from './components/Pages/QuizPage';
-import ResultPage from './components/Pages/ResultPage';
-import { Layout } from './components/Main/Layout';
+import { AdminPage } from '../src/Pages/Index';
+import { AuthorizationPage } from '../src/Pages/Index';
+import { QuizPage } from '../src/Pages/Index';
+import { ResultPage } from '../src/Pages/Index';
+import { Layout } from './components/Layout';
 
 function App() {
   return (
