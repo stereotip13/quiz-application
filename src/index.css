@@ -16,17 +16,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-header {
+.header-link {
   background-color: var(--color-bg);
   padding: 2rem 0;
   text-align: center;
 }
-.link {
+.header-link > a {
   color: white;
   text-decoration: none;
   padding: 0 1rem;
 }
-header > a:hover {
+.header-link > a:hover {
   text-decoration: underline;
 }
 
@@ -40,6 +40,10 @@ h1 {
   padding-left: 2rem;
   padding-right: 2rem;
   margin: 0 auto;
+}
+.footer-style {
+  position: fixed;
+  bottom: 0;
 }
 
 main {
@@ -56,7 +60,7 @@ main a:hover {
   text-decoration: underline;
 }
 
-.active {
+.active-link {
   color: var(--color-active);
-  cursor: default;
+  cursor: pointer;
 }

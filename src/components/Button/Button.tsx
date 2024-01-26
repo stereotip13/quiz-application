@@ -3,8 +3,8 @@ import { Button as MUIButton } from '@mui/material';
 //read about MUI components https://mui.com/material-ui/react-button/
 
 interface ButtonProps {
-  disabled: boolean;
-  type: string;
+  disabled?: boolean;
+  type?: string;
 }
 // eslint-disable-next-line react-hooks/rules-of-hooks
 
