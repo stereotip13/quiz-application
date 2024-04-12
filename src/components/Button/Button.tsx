@@ -1,14 +1,11 @@
 import { Button as MUIButton } from '@mui/material';
 
-//read about MUI components https://mui.com/material-ui/react-button/
-
 interface ButtonProps {
   disabled?: boolean;
-  type?: string;
+  type?: "button" | "submit" | "reset";
 }
-// eslint-disable-next-line react-hooks/rules-of-hooks
 
-export const Button = ({ disabled }: ButtonProps, { type }: ButtonProps) => {
+export const Button : React.FC<ButtonProps>  = ({ disabled,type }) => {
   return (
     <MUIButton disabled={disabled} type={type}>
       Авторизоваться и начать тестирование

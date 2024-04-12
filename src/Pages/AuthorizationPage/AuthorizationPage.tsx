@@ -15,7 +15,7 @@ export const AuthorizationPage = () => {
 
       {/* <Button fullWidth variant="contained" type="submit">
         Get Started
-      </Button> */}
+      </Button>  */}
     </form>
   );
 };
