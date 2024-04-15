@@ -2,27 +2,28 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import { createAttachedSignature } from 'crypto-pro';
-//import Button from '@mui/material/Button';
+import { Certificate } from '../../components/Certificate';
 export const AuthorizationPage = () => {
   const navigate = useNavigate();
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    navigate('/quiz', { replace: true });
-  };
-  const [message, setMessage] = useState('');
-  const [certificate, setCertificate] = useState(null);
+  const [certificate, setCertificate] = useState <string | null> (null);
   const [hashStatus, setHashStatus] = useState('Не вычислен');
   const [hashError, setHashError] = useState(null);
   const [signature, setSignature] = useState('');
   const [signatureStatus, setSignatureStatus] = useState('Не создана');
   const [signatureError, setSignatureError] = useState(null);
-  async function createSignature(event) {
-    event.preventDefault();
+
+  //сделал хандл, а он с ошибкой работает Uncaught TypeError: Cannot read properties of undefined (reading 'value')
+  const handleCertificateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCertificate(e.target.value);}
+
+  async function createSignature(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const message = 'hello';
+
 
     setSignature('');
     setSignatureError(null);
 
-    setHash('');
     setHashError(null);
     setHashStatus('Вычисляется...');
 
@@ -33,22 +34,20 @@ export const AuthorizationPage = () => {
       setSignature(
         await createAttachedSignature(certificate.thumbprint, message),
       );
-      console.log(signature);
+      console.log({signature});
       navigate('/quiz', { replace: true });
     } catch (error) {
       setSignatureError(error.message);
+      console.log(error.message)
     }
 
     setSignatureStatus('Не создана');
   }
   return (
-    <form onSubmit={createAttachedSignature}>
+    <form onSubmit={createSignature}>
       <h1>АВТОРИЗАЦИЯ ДЛЯ НАЧАЛА ТЕСТА</h1>
+      <Certificate onChange={setCertificate}/>
       <Button disabled={false} type="submit" />
-
-      {/* <Button fullWidth variant="contained" type="submit">
-        Get Started
-      </Button>  */}
     </form>
   );
 };

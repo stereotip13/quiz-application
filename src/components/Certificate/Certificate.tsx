@@ -14,7 +14,7 @@ function Certificate({onChange}:CertificateProps) {
   function selectCertificate(event: { target: { value: any; }; }) {
     const certificate = certificates.find(({thumbprint}) => thumbprint === event.target.value);
 
-    setCertificate(certificate);
+    setCertificate(certificate ?? null);
     onChange(certificate);
   }
 
@@ -65,7 +65,7 @@ function Certificate({onChange}:CertificateProps) {
 
   return (
     <>
-      <label htmlFor="certificate">Сертификат: *</label>
+      <label htmlFor="certificate">Выберите актуальный сертификат ЭП: </label>
 
       <br/>
 
