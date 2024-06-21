@@ -1,3 +1,3 @@
-import { AdminPage } from './AdminPage.tsx';
+import AdminPage  from './AdminPage.tsx';
 
 export { AdminPage };
