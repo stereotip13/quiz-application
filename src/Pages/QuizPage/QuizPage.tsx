@@ -1,5 +1,5 @@
 import React,{ FormEvent, useState } from "react";
-import {login} from '../../http/userApi'
+import { login } from "../../http/userApi";
 interface LoginData{
   snils:string,
   password:string
@@ -22,7 +22,7 @@ const QuizPage = () => {
   }
   return (
     <form onSubmit={handleSubmit}>
-    <input
+      <input
       type="text"
       name="firstName"
       value={loginData.snils}

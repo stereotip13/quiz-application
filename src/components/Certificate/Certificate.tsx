@@ -1,9 +1,11 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { getCertificate, getUserCertificates } from 'crypto-pro';
 
+
+//делаем интерфейс - и типипизируем onchange
 interface CertificateProps {
-    onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
-  }
+  onChange: (certificate: string | null) => void; // тип параметра на функцию, принимающую сертификат
+}
 function Certificate({onChange}:CertificateProps) {
   const [certificates, setCertificates] = useState([]);
   const [certificatesError, setCertificatesError] = useState([]);
@@ -11,6 +13,11 @@ function Certificate({onChange}:CertificateProps) {
   const [certificateDetails, setCertificateDetails] = useState(null);
   const [detailsError, setDetailsError] = useState(null);
 
+  //обработчик события, который выбирает сертификат по его thumbprint и обновляет
+  //состояния certificate и certificateDetails.
+  //Компонент AuthorizationPage передает функцию setCertificate как проп onChange компоненту Certificate.
+  //Компонент Certificate вызывает эту функцию с выбранным сертификатом, обновляя состояние certificate в AuthorizationPage
+  //Теперь certificate доступен в AuthorizationPage для использования в функции createSignature.
   function selectCertificate(event: { target: { value: any; }; }) {
     const certificate = certificates.find(({thumbprint}) => thumbprint === event.target.value);
 
@@ -20,6 +27,7 @@ function Certificate({onChange}:CertificateProps) {
 
   async function loadCertificateDetails(thumbprint) {
     try {
+      console.log("это трамблпринт",thumbprint)
       const certificate = await getCertificate(thumbprint);
 
       setCertificateDetails({

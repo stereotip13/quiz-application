@@ -1,22 +1,27 @@
-import React, { useState, FormEvent } from 'react';
-
+import React, { useState, FormEvent, useRef } from 'react';
+import './styles.css';
+import { createQuestion } from '../../http/questionApi';
 // Определяем тип для данных формы
 interface FormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
+  text: string;
+  right_ansv: string;
+  wrong_answ1: string;
+  wrong_answ2: string;
+  wrong_answ3: string;
+  category: string;
+  difficulty: string;
 }
 
 const AdminPage: React.FC = () => {
   // Задаем начальные значения для состояния формы
   const [formData, setFormData] = useState<FormData>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    text: '',
+    right_ansv: '',
+    wrong_answ1: '',
+    wrong_answ2: '',
+    wrong_answ3: '',
+    category: '',
+    difficulty: '',
   });
 
   // Обновляем состояние при вводе данных в поля формы
@@ -28,62 +33,86 @@ const AdminPage: React.FC = () => {
   // Обработчик отправки формы
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
-
-    // Валидация данных формы (например, проверка совпадения паролей)
-    if (formData.password !== formData.confirmPassword) {
-      alert('Пароли не совпадают!');
-      return;
-    }
-
-    // Здесь должна быть логика отправки данных на бэкэнд
     console.log('Отправка данных на бэкэнд:', formData);
-    // Вызываем API для отправки данных или используем библиотеку вроде axios
+    //axios.post('http://localhost:5001/questions/crquest', formData)
+    createQuestion(formData)
+      .then(response => {
+        console.log('Данные успешно отправлены на бэкэнд:', response.data);
+        setFormData({
+          text: '',
+          right_ansv: '',
+          wrong_answ1: '',
+          wrong_answ2: '',
+          wrong_answ3: '',
+          category: '',
+          difficulty: '',
+        });
+      })
+      .catch(error => {
+        console.error('Ошибка при отправке данных на бэкэнд:', error);
+      });
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <input
         type="text"
-        name="firstName"
-        value={formData.firstName}
+        name="text"
+        value={formData.text}
         onChange={handleChange}
         placeholder="вопрос"
         required
       />
       <input
         type="text"
-        name="lastName"
-        value={formData.lastName}
+        name="right_ansv"
+        value={formData.right_ansv}
         onChange={handleChange}
         placeholder="Правильный ответ"
         required
       />
       <input
-        type="email"
-        name="email"
-        value={formData.email}
+        type="text"
+        name="wrong_answ1"
+        value={formData.wrong_answ1}
         onChange={handleChange}
         placeholder="неверный ответ 1"
         required
       />
       <input
-        type="password"
-        name="password"
-        value={formData.password}
+        type="text"
+        name="wrong_answ2"
+        value={formData.wrong_answ2}
         onChange={handleChange}
         placeholder="неверный ответ 2"
         required
       />
       <input
-        type="password"
-        name="confirmPassword"
-        value={formData.confirmPassword}
+        type="text"
+        name="wrong_answ3"
+        value={formData.wrong_answ3}
         onChange={handleChange}
         placeholder="неверный ответ 3"
+        required
+      />
+      <input
+        type="text"
+        name="category"
+        value={formData.category}
+        onChange={handleChange}
+        placeholder="категория"
+        required
+      />
+      <input
+        type="text"
+        name="difficulty"
+        value={formData.difficulty}
+        onChange={handleChange}
+        placeholder="сложность"
         required
       />
       <button type="submit">Сохранить</button>
     </form>
   );
-}
+};
 export default AdminPage;
