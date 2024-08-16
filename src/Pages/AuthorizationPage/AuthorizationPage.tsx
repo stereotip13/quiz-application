@@ -22,9 +22,16 @@ export const AuthorizationPage = () => {
         // Разделение строки на части по запятой и пробелу
         const parts = certificate.subjectName.split(', ');
         let snils = '';
+        let password = '';
+        console.log('это парт', parts);
         parts.forEach(part => {
           if (part.includes('СНИЛС=')) {
             snils = part.split('=')[1]; // Получение значения после "="
+          }
+        });
+        parts.forEach(part => {
+          if (part.includes('ИНН=')) {
+            password = part.split('=')[1]; // Получение значения после "="
           }
         });
         console.log('значение СНИЛС', snils);
@@ -38,7 +45,6 @@ export const AuthorizationPage = () => {
         let name = certificate.name;
 
         console.log('Имя владельца серта:', name);
-        const password = '123qwe';
         const rating = 1;
         // registration({ otdel, rating, name, password, snils })
         //   .then(response => {
@@ -50,7 +56,7 @@ export const AuthorizationPage = () => {
         //   .catch(error => {
         //     console.error('ошибка при отправке данных', error);
         //   });
-        axios.post('http://localhost:5001/auth/register', {
+        axios.post('http://localhost:5001/auth/login', {
           otdel,
           rating,
           name,
