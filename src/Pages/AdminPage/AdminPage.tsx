@@ -79,6 +79,7 @@ const AdminPage: React.FC = () => {
           category: 'orsibi',
           difficulty: 'легкий',
         });
+        console.log('ответ сервера', response.data);
       })
       .catch(error => {
         console.error('Ошибка при отправке данных на бэкэнд:', error);

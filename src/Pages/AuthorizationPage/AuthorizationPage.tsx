@@ -63,13 +63,15 @@ export const AuthorizationPage = () => {
           password,
           snils,
         });
-        navigate('/quiz', { replace: true });
       } catch (error) {
         console.error('Произошла ошибка при создании сет сигнатуре:', error);
+        return;
       }
     } else {
       console.error('Сертификат равен null.'); // Обработка случая, когда сертификат равен null
+      return;
     }
+    navigate('/quiz', { replace: true });
   }
   return (
     <form onSubmit={createSignature}>

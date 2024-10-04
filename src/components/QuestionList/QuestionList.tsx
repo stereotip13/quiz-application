@@ -38,9 +38,9 @@ const QuestionsList: React.FC<QuestionsListProps> = ({
               <strong>Неправильные ответы:</strong>
             </p>
             <ul>
-              <li>{question.wrong_answ1}</li>
-              <li>{question.wrong_answ2}</li>
-              <li>{question.wrong_answ3}</li>
+              <li key={`${question.id}-wrong1`}>{question.wrong_answ1}</li>
+              <li key={`${question.id}-wrong2`}>{question.wrong_answ2}</li>
+              <li key={`${question.id}-wrong3`}>{question.wrong_answ3}</li>
             </ul>
             <p>
               <strong>Категория:</strong> {question.category}
