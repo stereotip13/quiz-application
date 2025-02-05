@@ -25,42 +25,44 @@ const QuestionsList: React.FC<QuestionsListProps> = ({
   onDelete,
 }) => {
   return (
-    <div>
+    <div className="questions-list">
       <h1>Список вопросов</h1>
-      <ul>
-        {questions.map(question => (
-          <li key={question.id}>
-            <h2>{question.text}</h2>
-            <p>
-              <strong>Правильный ответ:</strong> {question.right_ansv}
-            </p>
-            <p>
-              <strong>Неправильные ответы:</strong>
-            </p>
-            <ul>
-              <li key={`${question.id}-wrong1`}>{question.wrong_answ1}</li>
-              <li key={`${question.id}-wrong2`}>{question.wrong_answ2}</li>
-              <li key={`${question.id}-wrong3`}>{question.wrong_answ3}</li>
-            </ul>
-            <p>
-              <strong>Категория:</strong> {question.category}
-            </p>
-            <p>
-              <strong>Сложность:</strong> {question.difficulty}
-            </p>
-            <p>
-              <strong>Создано:</strong>{' '}
-              {new Date(question.createdAt).toLocaleString()}
-            </p>
-            <p>
-              <strong>Обновлено:</strong>{' '}
-              {new Date(question.updatedAt).toLocaleString()}
-            </p>
-            {/* Кнопка для удаления */}
-            <button onClick={() => onDelete(question.id)}>Удалить</button>
-          </li>
-        ))}
-      </ul>
+      {questions.map(question => (
+        <div key={question.id} className="question-item">
+          <h2>{question.text}</h2>
+          <p>
+            <strong>Правильный ответ:</strong> {question.right_ansv}
+          </p>
+          <p>
+            <strong>Неправильные ответы:</strong>
+          </p>
+          <ul>
+            <li>{question.wrong_answ1}</li>
+            <li>{question.wrong_answ2}</li>
+            <li>{question.wrong_answ3}</li>
+          </ul>
+          <p>
+            <strong>Категория:</strong> {question.category}
+          </p>
+          <p>
+            <strong>Сложность:</strong> {question.difficulty}
+          </p>
+          <p>
+            <strong>Создано:</strong>{' '}
+            {new Date(question.createdAt).toLocaleString()}
+          </p>
+          <p>
+            <strong>Обновлено:</strong>{' '}
+            {new Date(question.updatedAt).toLocaleString()}
+          </p>
+          <button
+            className="delete-button"
+            onClick={() => onDelete(question.id)}
+          >
+            Удалить
+          </button>
+        </div>
+      ))}
     </div>
   );
 };

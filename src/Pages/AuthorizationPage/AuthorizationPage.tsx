@@ -1,14 +1,28 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/Button';
-import { createAttachedSignature, getCertificate } from 'crypto-pro';
+import { createAttachedSignature /*getCertificate*/ } from 'crypto-pro';
 import { Certificate } from '../../components/Certificate';
 import axios from 'axios';
-import { registration } from '../../http/userApi';
+//import { registration } from '../../http/userApi';
+
+interface CertificateData {
+  thumbprint: string;
+  name: string;
+  subjectName: string;
+}
+
 export const AuthorizationPage = () => {
   const navigate = useNavigate();
-  const [certificate, setCertificate] = useState<any>(null);
+  const [certificate, setCertificate] = useState<CertificateData | null>(null);
   const [signature, setSignature] = useState('');
+
+  // Функция для обработки изменения сертификата
+  // Принимает сертификат в виде строки или null
+  const handleCertificateChange = (cert: string | null) => {
+    // Устанавливает состояние сертификата, преобразуя строку в тип CertificateData или null
+    setCertificate(cert as unknown as CertificateData | null);
+  };
 
   async function createSignature(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -24,25 +38,25 @@ export const AuthorizationPage = () => {
         let snils = '';
         let password = '';
         console.log('это парт', parts);
-        parts.forEach(part => {
+        parts.forEach((part: string) => {
           if (part.includes('СНИЛС=')) {
             snils = part.split('=')[1]; // Получение значения после "="
           }
         });
-        parts.forEach(part => {
+        parts.forEach((part: string) => {
           if (part.includes('ИНН=')) {
             password = part.split('=')[1]; // Получение значения после "="
           }
         });
         console.log('значение СНИЛС', snils);
         let otdel = '';
-        parts.forEach(part => {
+        parts.forEach((part: string) => {
           if (part.includes('OU=')) {
             otdel = part.split('=')[1]; // Получение значения после "="
           }
         });
         console.log('значение отдела', otdel);
-        let name = certificate.name;
+        const name = certificate.name;
 
         console.log('Имя владельца серта:', name);
         const rating = 1;
@@ -76,7 +90,7 @@ export const AuthorizationPage = () => {
   return (
     <form onSubmit={createSignature}>
       <h1>АВТОРИЗАЦИЯ ДЛЯ НАЧАЛА ТЕСТА</h1>
-      <Certificate onChange={setCertificate} />
+      <Certificate onChange={handleCertificateChange} />
       <Button disabled={false} type="submit" />
     </form>
   );

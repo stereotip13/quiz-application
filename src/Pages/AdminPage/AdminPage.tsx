@@ -50,13 +50,15 @@ const AdminPage: React.FC = () => {
         setQuestions(response.data);
         setLoading(false);
       })
-      .catch(error => {
+      .catch(() => {
         setError('Ошибка при загрузке данных');
         setLoading(false);
       });
   }, []);
   // Обновляем состояние при вводе данных в поля формы
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   }
@@ -117,76 +119,75 @@ const AdminPage: React.FC = () => {
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="text"
-          value={formData.text}
-          onChange={handleChange}
-          placeholder="вопрос"
-          required
-        />
-        <input
-          type="text"
-          name="right_ansv"
-          value={formData.right_ansv}
-          onChange={handleChange}
-          placeholder="Правильный ответ"
-          required
-        />
-        <input
-          type="text"
-          name="wrong_answ1"
-          value={formData.wrong_answ1}
-          onChange={handleChange}
-          placeholder="неверный ответ 1"
-          required
-        />
-        <input
-          type="text"
-          name="wrong_answ2"
-          value={formData.wrong_answ2}
-          onChange={handleChange}
-          placeholder="неверный ответ 2"
-          required
-        />
-        <input
-          type="text"
-          name="wrong_answ3"
-          value={formData.wrong_answ3}
-          onChange={handleChange}
-          placeholder="неверный ответ 3"
-          required
-        />
-        {/* Выпадающий список для выбора категории */}
-        <select
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        >
-          <option value="orsibi">Orsibi</option>
-          <option value="master">Master</option>
-          <option value="beginer">Beginer</option>
-        </select>
+    <div className="admin-container">
+      <form className="admin-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <input
+            type="text"
+            name="text"
+            value={formData.text}
+            onChange={handleChange}
+            placeholder="Вопрос"
+            required
+          />
+          <input
+            type="text"
+            name="right_ansv"
+            value={formData.right_ansv}
+            onChange={handleChange}
+            placeholder="Правильный ответ"
+            required
+          />
+          <input
+            type="text"
+            name="wrong_answ1"
+            value={formData.wrong_answ1}
+            onChange={handleChange}
+            placeholder="Неверный ответ 1"
+            required
+          />
+          <input
+            type="text"
+            name="wrong_answ2"
+            value={formData.wrong_answ2}
+            onChange={handleChange}
+            placeholder="Неверный ответ 2"
+            required
+          />
+          <input
+            type="text"
+            name="wrong_answ3"
+            value={formData.wrong_answ3}
+            onChange={handleChange}
+            placeholder="Неверный ответ 3"
+            required
+          />
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            required
+          >
+            <option value="orsibi">Orsibi</option>
+            <option value="master">Master</option>
+            <option value="beginer">Beginer</option>
+          </select>
 
-        {/* Выпадающий список для выбора сложности */}
-        <select
-          name="difficulty"
-          value={formData.difficulty}
-          onChange={handleChange}
-          required
-        >
-          <option value="легкий">Легкий</option>
-          <option value="средний">Средний</option>
-          <option value="продвинутый">Продвинутый</option>
-        </select>
+          <select
+            name="difficulty"
+            value={formData.difficulty}
+            onChange={handleChange}
+            required
+          >
+            <option value="легкий">Легкий</option>
+            <option value="средний">Средний</option>
+            <option value="продвинутый">Продвинутый</option>
+          </select>
+        </div>
 
         <button type="submit">Сохранить</button>
       </form>
 
-      {/* Элементы для фильтрации */}
       <div className="filters">
         <select
           value={filterCategory}
@@ -209,9 +210,11 @@ const AdminPage: React.FC = () => {
         </select>
       </div>
 
-      {/* Передаем отфильтрованный список вопросов в компонент QuestionsList */}
+      {loading && <div className="loading">Загрузка...</div>}
+      {error && <div className="error">{error}</div>}
+
       <QuestionsList questions={filteredQuestions} onDelete={handleDelete} />
-    </>
+    </div>
   );
 };
 
