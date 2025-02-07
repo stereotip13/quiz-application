@@ -4,6 +4,7 @@ import { Button } from '../../components/Button';
 import { createAttachedSignature /*getCertificate*/ } from 'crypto-pro';
 import { Certificate } from '../../components/Certificate';
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 //import { registration } from '../../http/userApi';
 
 interface CertificateData {
@@ -14,6 +15,7 @@ interface CertificateData {
 
 export const AuthorizationPage = () => {
   const navigate = useNavigate();
+  const { setUserName } = useAuth();
   const [certificate, setCertificate] = useState<CertificateData | null>(null);
   const [signature, setSignature] = useState('');
 
@@ -70,6 +72,10 @@ export const AuthorizationPage = () => {
         //   .catch(error => {
         //     console.error('ошибка при отправке данных', error);
         //   });
+        // Сохраняем имя пользователя
+        localStorage.setItem('userName', name);
+        setUserName(name);
+
         axios.post('http://localhost:5001/auth/login', {
           otdel,
           rating,
