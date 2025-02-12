@@ -1,0 +1,85 @@
+.answer-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.answer-option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.answer-option:hover {
+  background-color: #f5f5f5;
+}
+
+.answer-option input[type='radio'] {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+.answer-text {
+  font-size: 1rem;
+  color: #333;
+}
+
+.answer-option.selected .answer-text {
+  font-weight: 700;
+}
+
+.answer-option.correct {
+  border-color: #4caf50;
+}
+
+.answer-option.correct .answer-text {
+  color: #4caf50;
+}
+
+.answer-option input[type='radio']:checked + .answer-text {
+  font-weight: 700;
+}
+
+.checkmark {
+  position: absolute;
+  right: 1rem;
+  color: #4caf50;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+@keyframes checkmark-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.checkmark {
+  animation: checkmark-appear 0.3s ease forwards;
+}
+
+.answer-option input[type='radio']:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.answer-option input[type='radio']:disabled + .answer-text {
+  cursor: not-allowed;
+}
+
+.answer-option input[type='radio']:disabled ~ * {
+  cursor: not-allowed;
+}

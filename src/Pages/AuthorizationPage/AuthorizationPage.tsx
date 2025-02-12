@@ -3,9 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import { createAttachedSignature /*getCertificate*/ } from 'crypto-pro';
 import { Certificate } from '../../components/Certificate';
-import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
-//import { registration } from '../../http/userApi';
+import { login } from '../../http/userApi';
 
 interface CertificateData {
   thumbprint: string;
@@ -38,16 +37,11 @@ export const AuthorizationPage = () => {
         // Разделение строки на части по запятой и пробелу
         const parts = certificate.subjectName.split(', ');
         let snils = '';
-        let password = '';
+        const password = '123qwe';
         console.log('это парт', parts);
         parts.forEach((part: string) => {
           if (part.includes('СНИЛС=')) {
             snils = part.split('=')[1]; // Получение значения после "="
-          }
-        });
-        parts.forEach((part: string) => {
-          if (part.includes('ИНН=')) {
-            password = part.split('=')[1]; // Получение значения после "="
           }
         });
         console.log('значение СНИЛС', snils);
@@ -61,28 +55,14 @@ export const AuthorizationPage = () => {
         const name = certificate.name;
 
         console.log('Имя владельца серта:', name);
-        const rating = 1;
-        // registration({ otdel, rating, name, password, snils })
-        //   .then(response => {
-        //     console.log(
-        //       'Данные по регистрации успешно отправлены на бэк',
-        //       response.data,
-        //     );
-        //   })
-        //   .catch(error => {
-        //     console.error('ошибка при отправке данных', error);
-        //   });
-        // Сохраняем имя пользователя
         localStorage.setItem('userName', name);
         setUserName(name);
 
-        axios.post('http://localhost:5001/auth/login', {
-          otdel,
-          rating,
-          name,
-          password,
-          snils,
-        });
+        const response = await login({ password, snils, name });
+        // Сохраняем токен в sessionStorage
+        if (response.data.token) {
+          sessionStorage.setItem('token', response.data.token);
+        }
       } catch (error) {
         console.error('Произошла ошибка при создании сет сигнатуре:', error);
         return;

@@ -129,6 +129,7 @@ const AdminPage: React.FC = () => {
             onChange={handleChange}
             placeholder="Вопрос"
             required
+            className="width-100"
           />
           <input
             type="text"
