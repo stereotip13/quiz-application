@@ -27,18 +27,24 @@ export const AnswerOptions: React.FC<AnswerOptionsProps> = ({
     if (!selectedAnswer) return '';
 
     let className = '';
-    if (answer === selectedAnswer) className += ' selected';
+    if (answer === selectedAnswer) {
+      className += ' selected';
+      if (answer !== rightAnswer) className += ' incorrect';
+    }
     if (showCorrectAnswer && answer === rightAnswer) className += ' correct';
 
     return className;
   };
 
-  const showCheckmark = (answer: string) => {
-    return (
-      showCorrectAnswer &&
-      answer === rightAnswer &&
-      selectedAnswer === rightAnswer
-    );
+  const showIcon = (answer: string) => {
+    if (!selectedAnswer) return null;
+    if (answer === rightAnswer && selectedAnswer === rightAnswer) {
+      return <span className="checkmark">✓</span>;
+    }
+    if (answer === selectedAnswer && answer !== rightAnswer) {
+      return <span className="crossmark">✕</span>;
+    }
+    return null;
   };
 
   return (
@@ -59,7 +65,7 @@ export const AnswerOptions: React.FC<AnswerOptionsProps> = ({
             disabled={selectedAnswer !== undefined}
           />
           <span className="answer-text">{answer}</span>
-          {showCheckmark(answer) && <span className="checkmark">✓</span>}
+          {showIcon(answer)}
         </label>
       ))}
     </div>

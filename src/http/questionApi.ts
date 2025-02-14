@@ -2,7 +2,7 @@ import { $host } from '.';
 import { AxiosResponse } from 'axios';
 
 interface Question {
-  id: number;
+  id?: number;
   text: string;
   right_ansv: string;
   wrong_answ1: string;
@@ -20,7 +20,7 @@ export const createQuestion = async ({
   wrong_answ3,
   category,
   difficulty,
-}: Question): Promise<AxiosResponse> => {
+}: Omit<Question, 'id'>): Promise<AxiosResponse> => {
   const response: AxiosResponse = await $host.post(
     'http://localhost:5001/questions/crquest',
     {

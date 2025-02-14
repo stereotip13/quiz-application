@@ -36,13 +36,19 @@ const QuizPage = () => {
     setAnsweredQuestions(prev => new Set(prev).add(questionId));
   };
 
+  const getRandomQuestions = (allQuestions: Question[], count: number) => {
+    const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count);
+  };
+
   const startTest = async () => {
     setIsLoading(true);
     setError('');
 
     try {
-      const questions = await fetchQuestions();
-      setQuestions(questions);
+      const allQuestions = await fetchQuestions();
+      const randomQuestions = getRandomQuestions(allQuestions, 10);
+      setQuestions(randomQuestions);
       setIsTestStarted(true);
     } catch (err) {
       setError('Ошибка при получении вопросов. Пожалуйста, попробуйте позже.');
@@ -51,6 +57,22 @@ const QuizPage = () => {
       setIsLoading(false);
     }
   };
+
+  const calculateResults = () => {
+    const totalQuestions = questions.length;
+    const correctAnswers = questions.reduce((count, question) => {
+      return userAnswers[question.id] === question.right_ansv
+        ? count + 1
+        : count;
+    }, 0);
+    const incorrectAnswers = totalQuestions - correctAnswers;
+    const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+
+    return { correctAnswers, incorrectAnswers, percentage };
+  };
+
+  const allQuestionsAnswered =
+    questions.length > 0 && questions.every(q => userAnswers[q.id]);
 
   if (isLoading) {
     return <div className="loading">Загрузка вопросов...</div>;
@@ -92,6 +114,32 @@ const QuizPage = () => {
           />
         </div>
       ))}
+
+      {allQuestionsAnswered && (
+        <div className="results-container">
+          <h2>Результаты теста</h2>
+          <div className="results-stats">
+            <p>
+              Правильных ответов:{' '}
+              <span className="correct">
+                {calculateResults().correctAnswers}
+              </span>
+            </p>
+            <p>
+              Неправильных ответов:{' '}
+              <span className="incorrect">
+                {calculateResults().incorrectAnswers}
+              </span>
+            </p>
+            <p>
+              Процент правильных ответов:{' '}
+              <span className="percentage">
+                {calculateResults().percentage}%
+              </span>
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

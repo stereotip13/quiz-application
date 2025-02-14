@@ -83,3 +83,20 @@
 .answer-option input[type='radio']:disabled ~ * {
   cursor: not-allowed;
 }
+
+.answer-option.incorrect {
+  border-color: #dc3545;
+}
+
+.answer-option.incorrect .answer-text {
+  color: #dc3545;
+}
+
+.crossmark {
+  position: absolute;
+  right: 1rem;
+  color: #dc3545;
+  font-size: 1.2rem;
+  font-weight: bold;
+  animation: checkmark-appear 0.3s ease forwards;
+}
