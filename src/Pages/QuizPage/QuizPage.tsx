@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { fetchQuestions } from '../../http/userApi';
+import { fetchQuestions, sendTestResults } from '../../http/userApi';
 import { AnswerOptions } from '../../components/AnswerOptions/AnswerOptions';
+import { useNavigate } from 'react-router-dom';
 import './QuizPage.css';
 
 interface Question {
@@ -24,9 +25,12 @@ const QuizPage = () => {
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [isTestStarted, setIsTestStarted] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [isSendingResults, setIsSendingResults] = useState(false);
   const [answeredQuestions, setAnsweredQuestions] = useState<Set<number>>(
     new Set(),
   );
+  const navigate = useNavigate();
 
   const handleAnswerSelect = (questionId: number, answer: string) => {
     setUserAnswers(prev => ({
@@ -69,6 +73,29 @@ const QuizPage = () => {
     const percentage = Math.round((correctAnswers / totalQuestions) * 100);
 
     return { correctAnswers, incorrectAnswers, percentage };
+  };
+
+  const handleFinishTest = async () => {
+    setShowResults(true);
+    setIsSendingResults(true);
+
+    const results = calculateResults();
+    const snils = localStorage.getItem('userSnils') || '';
+
+    try {
+      await sendTestResults({
+        snils,
+        user_results: results.percentage,
+      });
+      setTimeout(() => {
+        navigate('/result');
+      }, 5000); // Перенаправление через 5 секунд после показа результатов
+    } catch (err) {
+      setError('Ошибка при отправке результатов');
+      console.error('Ошибка:', err);
+    } finally {
+      setIsSendingResults(false);
+    }
   };
 
   const allQuestionsAnswered =
@@ -115,7 +142,17 @@ const QuizPage = () => {
         </div>
       ))}
 
-      {allQuestionsAnswered && (
+      {allQuestionsAnswered && !showResults && (
+        <button
+          onClick={handleFinishTest}
+          className="finish-test-button"
+          disabled={isSendingResults}
+        >
+          {isSendingResults ? 'Обработка результатов...' : 'Завершить тест'}
+        </button>
+      )}
+
+      {showResults && (
         <div className="results-container">
           <h2>Результаты теста</h2>
           <div className="results-stats">
@@ -138,6 +175,11 @@ const QuizPage = () => {
               </span>
             </p>
           </div>
+          {error && <div className="error-message">{error}</div>}
+          <p className="redirect-message">
+            Вы будете перенаправлены на страницу результатов через несколько
+            секунд...
+          </p>
         </div>
       )}
     </div>

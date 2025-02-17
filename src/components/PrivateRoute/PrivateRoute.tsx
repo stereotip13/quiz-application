@@ -7,11 +7,9 @@ interface PrivateRouteProps {
 }
 export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const { userName } = useAuth();
+  const token = sessionStorage.getItem('token');
 
-  // Если не аутентифицирован, перенаправить на страницу входа
-  if (!userName) {
-    // Сохраните текущий маршрут для будущей переадресации
-    // после успешного входа в систему, если это необходимо.
+  if (!userName || !token) {
     return <Navigate to="/" replace />;
   }
 

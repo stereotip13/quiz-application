@@ -28,6 +28,27 @@ interface Question {
   difficulty: string;
 }
 
+interface TestResults {
+  snils: string;
+  user_results: number;
+}
+
+interface UserResult {
+  id: number;
+  user_id: number;
+  user_results: number;
+  timestamp: string;
+  user: {
+    id: number;
+    otdel: string;
+    rating: number;
+    name: string;
+    snils: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+
 export const registration = async ({
   snils,
   password,
@@ -60,6 +81,20 @@ export const fetchQuestions = async (): Promise<Question[]> => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+  });
+  return response.data;
+};
+
+export const sendTestResults = async (
+  results: TestResults,
+): Promise<AxiosResponse> => {
+  const response = await $host.post('http://localhost:5001/results', results);
+  return response;
+};
+
+export const getUserResults = async (snils: string): Promise<UserResult[]> => {
+  const response = await $host.post('http://localhost:5001/results/user', {
+    snils,
   });
   return response.data;
 };

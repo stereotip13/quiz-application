@@ -127,3 +127,47 @@ button:hover {
   color: #2196f3;
   font-weight: bold;
 }
+
+.submit-results-button {
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-results-button:hover {
+  background-color: #45a049;
+}
+
+.submit-results-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.finish-test-button {
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+}
+
+.finish-test-button:hover {
+  background-color: #1976d2;
+}
+
+.redirect-message {
+  margin-top: 1rem;
+  color: #666;
+  font-style: italic;
+}

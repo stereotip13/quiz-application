@@ -20,10 +20,11 @@
 //     $host,
 //     $authHost
 // }
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface AxiosResponseData {
-    // Определите структуру данных ответа, соответствующую вашему API
+  // Определите структуру данных ответа, соответствующую вашему API
 }
 
 const baseURL = import.meta.env.VITE_REACT_APP_API_URL;
@@ -35,12 +36,33 @@ const $host: AxiosInstance = createAxiosInstance();
 const $authHost: AxiosInstance = createAxiosInstance();
 
 const authInterceptor = (config: any): any => {
-    if (config.headers) {
-        config.headers.authorization = `Bearer ${localStorage.getItem('token')};`
-    }
-    return config;
+  if (config.headers) {
+    config.headers.authorization = `Bearer ${localStorage.getItem('token')};`;
+  }
+  return config;
 };
 //в authHost добавляем интерцептор для запроса, он будет отраб перед каждым запросом и подставлять в хедер авторизашн
 $authHost.interceptors.request.use(authInterceptor);
+
+$host.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401) {
+      // Токен истек или недействителен
+      sessionStorage.removeItem('token');
+      localStorage.removeItem('userName');
+      window.location.href = '/'; // Используем window.location для полной перезагрузки
+    }
+    return Promise.reject(error);
+  },
+);
+
+$host.interceptors.request.use(config => {
+  const token = sessionStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export { $host, $authHost };
