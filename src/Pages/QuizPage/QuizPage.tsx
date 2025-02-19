@@ -80,8 +80,13 @@ const QuizPage = () => {
     setIsSendingResults(true);
 
     const results = calculateResults();
-    const snils = localStorage.getItem('userSnils') || '';
-
+    //const snils = localStorage.getItem('userSnils') || '';
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      throw new Error('Токен не найден');
+    }
+    const payload = JSON.parse(atob(token.split('.')[1])) as JwtPayload;
+    const snils = payload.user.snils;
     try {
       await sendTestResults({
         snils,

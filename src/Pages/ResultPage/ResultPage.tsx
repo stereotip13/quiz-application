@@ -33,10 +33,9 @@ export const ResultPage = () => {
         if (!token) {
           throw new Error('Токен не найден');
         }
-
         const payload = JSON.parse(atob(token.split('.')[1])) as JwtPayload;
         const snils = payload.user.snils;
-
+        console.log('snils value', snils);
         const userResults = await getUserResults(snils);
         setResults(userResults);
         console.log('userResults', userResults);
@@ -58,7 +57,7 @@ export const ResultPage = () => {
   if (error) {
     return <div className="error-message">{error}</div>;
   }
-
+  console.log('rersults value', results);
   return (
     <div className="results-page">
       <h1>История результатов тестирования</h1>

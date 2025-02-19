@@ -57,7 +57,7 @@ export const registration = async ({
   rating,
 }: UserCredentials): Promise<AxiosResponse> => {
   const response: AxiosResponse = await $host.post(
-    'http://localhost:5001/auth/register',
+    'http://192.168.1.203:5001/auth/register',
     { snils, password, name, otdel, rating },
   );
   return response;
@@ -69,7 +69,7 @@ export const login = async ({
   name,
 }: LoginCredentials): Promise<AxiosResponse> => {
   const response: AxiosResponse = await $host.post(
-    'http://localhost:5001/auth/login',
+    'http://192.168.1.203:5001/auth/login',
     { snils, password, name },
   );
   return response;
@@ -77,7 +77,7 @@ export const login = async ({
 
 export const fetchQuestions = async (): Promise<Question[]> => {
   const token = sessionStorage.getItem('token');
-  const response = await $host.get('http://localhost:5001/questions', {
+  const response = await $host.get('http://192.168.1.203:5001/questions', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -88,13 +88,17 @@ export const fetchQuestions = async (): Promise<Question[]> => {
 export const sendTestResults = async (
   results: TestResults,
 ): Promise<AxiosResponse> => {
-  const response = await $host.post('http://localhost:5001/results', results);
+  const response = await $host.post(
+    'http://192.168.1.203:5001/results',
+    results,
+  );
   return response;
 };
 
 export const getUserResults = async (snils: string): Promise<UserResult[]> => {
-  const response = await $host.post('http://localhost:5001/results/user', {
+  const response = await $host.post('http://192.168.1.203:5001/results/user', {
     snils,
   });
+  console.log('response value', response);
   return response.data;
 };

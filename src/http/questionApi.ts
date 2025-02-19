@@ -22,7 +22,7 @@ export const createQuestion = async ({
   difficulty,
 }: Omit<Question, 'id'>): Promise<AxiosResponse> => {
   const response: AxiosResponse = await $host.post(
-    'http://localhost:5001/questions/crquest',
+    'https://localhost:5001/questions/crquest',
     {
       text,
       right_ansv,

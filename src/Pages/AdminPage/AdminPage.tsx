@@ -45,7 +45,7 @@ const AdminPage: React.FC = () => {
   // Запрос списка вопросов при загрузке компонента
   useEffect(() => {
     axios
-      .get('http://localhost:5001/questions')
+      .get('http://192.168.1.203:5001/questions')
       .then(response => {
         setQuestions(response.data);
         setLoading(false);
